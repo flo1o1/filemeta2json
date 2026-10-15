@@ -1,3 +1,3 @@
-"""filemeta2json: liest eingebettete Datei-Metadaten und gibt sie als JSON aus."""
+"""filemeta2json: reads embedded file metadata and prints it as JSON."""
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"

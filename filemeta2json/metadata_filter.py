@@ -1,20 +1,20 @@
-"""Trennt eingebettete Metadaten von Dateisystem- und Tool-Informationen."""
+"""Separates embedded metadata from file system and tool information."""
 
 from typing import Any, Dict
 
 SOURCE_FILE_KEY = "SourceFile"
 GROUP_SEPARATOR = ":"
 
-# Gruppen, die ExifTool immer liefert und die nichts über eingebettete
-# Metadaten aussagen (Dateisystem, Tool-Meldungen, Basis-Dateityp, abgeleitete Werte).
+# Groups that ExifTool always returns and that say nothing about embedded
+# metadata (file system, tool messages, base file type, derived values).
 NON_EMBEDDED_GROUPS = frozenset({"System", "ExifTool", "File", "Composite"})
 
 
 def extract_embedded_metadata(record: Dict[str, Any]) -> Dict[str, Any]:
-    """Behält nur eingebettete Metadaten eines ExifTool-Datensatzes.
+    """Keep only the embedded metadata of an ExifTool record.
 
-    record: ein Eintrag der ExifTool-JSON-Ausgabe (-G), Schlüssel "Gruppe:Tag".
-    Rückgabe: Teilmenge von `record`; leer, wenn die Datei keine Metadaten enthält.
+    record: one entry of the ExifTool JSON output (-G), keys "Group:Tag".
+    Returns: subset of `record`; empty if the file contains no metadata.
     """
     return {
         key: value

@@ -1,13 +1,13 @@
-"""Prüft, ob ein Dateipfad an exiftool (UTF-8) und JSON übergeben werden kann."""
+"""Checks whether a file path can be passed to exiftool (UTF-8) and JSON."""
 
 from pathlib import Path
 
 
 def is_utf8_encodable(path: Path) -> bool:
-    """True, wenn der Pfad verlustfrei als UTF-8 kodierbar ist.
+    """True if the path can be encoded as UTF-8 without loss.
 
-    Unter Linux dürfen Dateinamen beliebige Bytes enthalten; Python bildet
-    ungültige Bytes auf Surrogate ab, die sich nicht als UTF-8 kodieren lassen.
+    On Linux, file names may contain arbitrary bytes; Python maps
+    invalid bytes to surrogates, which cannot be encoded as UTF-8.
     """
     try:
         str(path).encode("utf-8")

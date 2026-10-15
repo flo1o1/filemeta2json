@@ -1,16 +1,16 @@
 # filemeta2json
 
-Durchsucht eine Datei oder ein Verzeichnis (rekursiv), liest eingebettete Metadaten
-(EXIF, XMP, IPTC, ID3, PDF, …) und gibt sie mit absolutem Pfad als JSON aus.
+Scans a file or directory (recursively), reads embedded metadata
+(EXIF, XMP, IPTC, ID3, PDF, …) and prints it as JSON with the absolute path.
 
-Voraussetzung: Python ≥ 3.9 und [`exiftool`](https://exiftool.org) (`brew install exiftool`). Keine Python-Abhängigkeiten.
+Requirements: Python ≥ 3.9 and [`exiftool`](https://exiftool.org) (`brew install exiftool`). No Python dependencies.
 
 ```sh
-python3 -m filemeta2json ~/Bilder                 # JSON nach stdout
-python3 -m filemeta2json ~/Bilder -o meta.json    # JSON in Datei
+python3 -m filemeta2json ~/Bilder                 # JSON to stdout
+python3 -m filemeta2json ~/Bilder -o meta.json    # JSON to file
 ```
 
-Ausgabe:
+Output:
 
 ```json
 [
@@ -18,11 +18,11 @@ Ausgabe:
 ]
 ```
 
-- Schlüssel haben die Form `Gruppe:Tag`. Dateisystem-, Tool- und abgeleitete Werte
-  (Gruppen `System`, `File`, `ExifTool`, `Composite`) werden nicht ausgegeben.
-- Dateien ohne eingebettete Metadaten fehlen in der Ausgabe.
-- Dateinamen mit Zeilenumbruch werden nicht unterstützt.
-- Exit-Codes: `0` OK, `2` ungültige Argumente, `3` `exiftool` fehlt oder liefert nichts.
+- Keys have the form `Group:Tag`. File system, tool and derived values
+  (groups `System`, `File`, `ExifTool`, `Composite`) are not printed.
+- Files without embedded metadata are omitted from the output.
+- File names containing a line break are not supported.
+- Exit codes: `0` OK, `2` invalid arguments, `3` `exiftool` missing or produced no output.
 
 ## Tests
 
@@ -30,15 +30,15 @@ Ausgabe:
 python3 -m unittest discover -s tests -t .
 ```
 
-`tests/unit`: isolierte Tests mit Fakes. `tests/regression`: End-to-End gegen echtes `exiftool` (werden ohne `exiftool` übersprungen).
+`tests/unit`: isolated tests with fakes. `tests/regression`: end-to-end against the real `exiftool` (skipped without `exiftool`).
 
-## Versionierung
+## Versioning
 
-SemVer. Einzige Versionsquelle: `filemeta2json/__init__.py`. Jede Änderung wird in `CHANGELOG.md` eingetragen.
-- MAJOR: inkompatible Änderung des JSON-Formats oder der CLI.
-- MINOR: neue, abwärtskompatible Funktion.
-- PATCH: Fehlerkorrektur.
+SemVer. Single version source: `filemeta2json/__init__.py`. Every change is recorded in `CHANGELOG.md`.
+- MAJOR: incompatible change to the JSON format or the CLI.
+- MINOR: new, backward-compatible feature.
+- PATCH: bug fix.
 
-## Lizenz
+## License
 
 [MIT](LICENSE)

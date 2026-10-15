@@ -50,7 +50,7 @@ class MainTest(unittest.TestCase):
 
     def test_missing_input_path_returns_invalid_arguments(self):
         self.assertEqual(self._run(["/not/here"]), EXIT_INVALID_ARGUMENTS)
-        self.assertIn("existiert nicht", self.stderr.getvalue())
+        self.assertIn("does not exist", self.stderr.getvalue())
 
     def test_invalid_output_path_returns_invalid_arguments_and_writes_nothing(self):
         self.assertEqual(self._run([str(self.root), "-o", str(self.root)]), EXIT_INVALID_ARGUMENTS)
@@ -76,13 +76,13 @@ class MainTest(unittest.TestCase):
             code = self._run([str(self.root), "-o", str(self.root / "out.json")])
         self.assertEqual(code, EXIT_INVALID_ARGUMENTS)
         self.assertIn("Disk full", self.stderr.getvalue())
-        self.assertIn("anderen Ausgabepfad", self.stderr.getvalue())
+        self.assertIn("different output path", self.stderr.getvalue())
 
     def test_unencodable_filename_is_warned_about_and_run_succeeds(self):
         bad = Path(os.fsdecode(b"/x/caf\xe9.jpg"))
         with unittest.mock.patch("filemeta2json.service.collect_files", return_value=[bad]):
             self.assertEqual(self._run([str(self.root)], StubReader()), EXIT_OK)
-        self.assertIn("Warnung", self.stderr.getvalue())
+        self.assertIn("Warning", self.stderr.getvalue())
         self.assertIn("\\udce9", self.stderr.getvalue())
         self.assertEqual(json.loads(self.stdout.getvalue()), [])
 

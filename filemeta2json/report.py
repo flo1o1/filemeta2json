@@ -1,4 +1,4 @@
-"""Datenmodell und JSON-Serialisierung des Ergebnisses."""
+"""Data model and JSON serialization of the result."""
 
 import json
 from dataclasses import asdict, dataclass
@@ -7,10 +7,10 @@ from typing import Any, Dict, Iterable
 
 @dataclass(frozen=True)
 class FileMetadata:
-    """Metadaten einer Datei.
+    """Metadata of a file.
 
-    path: absoluter Dateipfad (str).
-    metadata: eingebettete Metadaten, Schlüssel "Gruppe:Tag", JSON-serialisierbare Werte.
+    path: absolute file path (str).
+    metadata: embedded metadata, keys "Group:Tag", JSON-serializable values.
     """
 
     path: str
@@ -18,5 +18,5 @@ class FileMetadata:
 
 
 def to_json(entries: Iterable[FileMetadata]) -> str:
-    """Serialisiert Einträge als lesbares JSON-Array (UTF-8, Umlaute unmaskiert, mit Zeilenende)."""
+    """Serialize entries as a readable JSON array (UTF-8, non-ASCII characters unescaped, trailing newline)."""
     return json.dumps([asdict(entry) for entry in entries], indent=2, ensure_ascii=False) + "\n"

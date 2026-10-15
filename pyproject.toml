@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "filemeta2json"
 dynamic = ["version"]
-description = "Liest eingebettete Datei-Metadaten (via exiftool) und gibt sie als JSON aus."
+description = "Reads embedded file metadata (via exiftool) and prints it as JSON."
 requires-python = ">=3.9"
 readme = "README.md"
 license = "MIT"

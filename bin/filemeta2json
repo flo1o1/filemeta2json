@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Startskript: macht das Paket auch über einen Symlink (z. B. in ~/.local/bin) aufrufbar."""
+"""Launcher script: makes the package callable via a symlink (e.g. in ~/.local/bin) too."""
 
 import os
 import sys

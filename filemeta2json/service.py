@@ -1,4 +1,4 @@
-"""Anwendungsfall: Metadaten aller Dateien unter einem Pfad ermitteln."""
+"""Use case: determine the metadata of all files under a path."""
 
 import os
 from pathlib import Path
@@ -12,18 +12,18 @@ from filemeta2json.scanner import collect_files
 
 
 def _ignore_skipped(_path: Path) -> None:
-    """Standard-Callback: übersprungene Dateien werden nicht gemeldet."""
+    """Default callback: skipped files are not reported."""
 
 
 def collect_metadata(root: Path, reader: ExifToolReader,
                      on_skipped: Callable[[Path], None] = _ignore_skipped) -> List[FileMetadata]:
-    """Liefert Einträge für alle Dateien unter `root`, die eingebettete Metadaten besitzen.
+    """Return entries for all files under `root` that have embedded metadata.
 
-    root: existierende Datei oder Verzeichnis.
-    reader: Quelle der Rohdaten (austauschbar).
-    on_skipped: wird für jede Datei aufgerufen, deren Name nicht als UTF-8 kodierbar ist
-                (solche Dateien werden übersprungen).
-    Rückgabe: nach absolutem Pfad sortiert; Dateien ohne Metadaten fehlen.
+    root: existing file or directory.
+    reader: source of the raw data (replaceable).
+    on_skipped: called for each file whose name cannot be encoded as UTF-8
+                (such files are skipped).
+    Returns: sorted by absolute path; files without metadata are omitted.
     """
     files = _drop_unencodable(collect_files(root), on_skipped)
     records = reader.read(files)

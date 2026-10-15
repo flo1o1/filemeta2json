@@ -1,4 +1,4 @@
-"""Sammelt Dateien unterhalb eines Pfades."""
+"""Collects files below a path."""
 
 import os
 from pathlib import Path
@@ -6,11 +6,11 @@ from typing import List
 
 
 def collect_files(root: Path) -> List[Path]:
-    """Liefert alle regulären Dateien unter `root` als absolute, sortierte Pfade.
+    """Return all regular files under `root` as absolute, sorted paths.
 
-    root: existierender Pfad. Eine Datei ergibt eine Liste mit genau diesem Pfad,
-          ein Verzeichnis wird rekursiv durchsucht (Symlinks auf Verzeichnisse
-          werden nicht verfolgt, damit keine Zyklen entstehen).
+    root: existing path. A file yields a list with exactly that path,
+          a directory is searched recursively (symlinks to directories
+          are not followed, to avoid cycles).
     """
     absolute_root = Path(os.path.abspath(root))
     if absolute_root.is_file():

@@ -1,26 +1,31 @@
 # Changelog
 
-Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [SemVer](https://semver.org/lang/de/).
+Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning according to [SemVer](https://semver.org/).
+
+## [1.2.0] - 2026-10-15
+
+### Changed
+- All user-facing messages (errors, warnings, hints, `--help`), docs and code comments are now in English.
 
 ## [1.1.0] - 2026-10-11
 
 ### Added
-- Fehlt `exiftool`, nennt das Tool den passenden Installationsbefehl für Betriebssystem
-  und vorhandenen Paketmanager (Homebrew, MacPorts, apt, dnf, yum, pacman, zypper, apk, Nix, winget, Chocolatey, Scoop).
-- Hilfetexte bei fehlenden Lese-/Schreibrechten, nicht vorhandenem Zielverzeichnis,
-  nicht ausführbarem `exiftool` und nicht schreibbarer Ausgabedatei (Exit-Code 2).
+- If `exiftool` is missing, the tool prints the matching install command for the operating system
+  and available package manager (Homebrew, MacPorts, apt, dnf, yum, pacman, zypper, apk, Nix, winget, Chocolatey, Scoop).
+- Help texts for missing read/write permissions, a missing target directory,
+  a non-executable `exiftool` and an unwritable output file (exit code 2).
 
 ## [1.0.1] - 2026-10-11
 
 ### Fixed
-- Dateien, deren Name nicht als UTF-8 kodierbar ist (Linux), brachen den ganzen Lauf mit `UnicodeEncodeError` ab.
-  Sie werden jetzt übersprungen und auf stderr gemeldet.
+- Files whose name cannot be encoded as UTF-8 (Linux) aborted the whole run with `UnicodeEncodeError`.
+  They are now skipped and reported on stderr.
 
 ## [1.0.0] - 2026-10-11
 
 ### Added
-- Rekursives Durchsuchen eines Pfades (Datei oder Verzeichnis).
-- Auslesen eingebetteter Metadaten via `exiftool`; Ausgabe als JSON mit absolutem Dateipfad.
-- Dateien ohne eingebettete Metadaten werden ausgelassen.
-- Option `-o/--output` zum Schreiben in eine Datei, `--version`.
-- Exit-Codes: 0 OK, 2 ungültige Argumente, 3 `exiftool` fehlt/defekt.
+- Recursive scan of a path (file or directory).
+- Reads embedded metadata via `exiftool`; output as JSON with absolute file path.
+- Files without embedded metadata are omitted.
+- Option `-o/--output` to write to a file, `--version`.
+- Exit codes: 0 OK, 2 invalid arguments, 3 `exiftool` missing/broken.

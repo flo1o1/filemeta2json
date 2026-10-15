@@ -1,4 +1,4 @@
-"""Handlungsanweisungen, wenn exiftool fehlt (abhängig von Betriebssystem und Paketmanager)."""
+"""Instructions for when exiftool is missing (depending on operating system and package manager)."""
 
 import shutil
 import sys
@@ -7,7 +7,7 @@ from typing import Callable, List, Tuple
 DOWNLOAD_URL = "https://exiftool.org/install.html"
 HOMEBREW_URL = "https://brew.sh"
 
-# (Programm des Paketmanagers, Installationsbefehl), in Reihenfolge der Empfehlung.
+# (package manager program, install command), in order of recommendation.
 _MACOS = [
     ("brew", "brew install exiftool"),
     ("port", "sudo port install p5-image-exiftool"),
@@ -33,19 +33,19 @@ PackageManagerLookup = Callable[[str], object]
 
 def exiftool_install_hint(platform: str = sys.platform,
                           find_program: PackageManagerLookup = shutil.which) -> str:
-    """Erzeugt eine mehrzeilige Anleitung zur Installation von exiftool.
+    """Build a multi-line guide for installing exiftool.
 
-    platform: Wert wie `sys.platform` ("darwin", "linux", "win32", …).
-    find_program: liefert für einen Programmnamen einen Pfad oder None (Standard: shutil.which).
+    platform: value like `sys.platform` ("darwin", "linux", "win32", …).
+    find_program: returns a path or None for a program name (default: shutil.which).
     """
     commands = _available_commands(_commands_for(platform), find_program)
     if commands:
-        lines = ["exiftool installieren mit:"] + [f"  {command}" for command in commands]
+        lines = ["Install exiftool with:"] + [f"  {command}" for command in commands]
     else:
-        lines = [f"Kein bekannter Paketmanager gefunden. Download und Anleitung: {DOWNLOAD_URL}"]
+        lines = [f"No known package manager found. Download and instructions: {DOWNLOAD_URL}"]
         if platform.startswith("darwin"):
-            lines.append(f"Oder zuerst Homebrew installieren: {HOMEBREW_URL}")
-    lines.append("Danach prüfen: exiftool -ver (Terminal ggf. neu starten, damit der PATH aktualisiert wird).")
+            lines.append(f"Or install Homebrew first: {HOMEBREW_URL}")
+    lines.append("Then verify: exiftool -ver (restart the terminal if needed so the PATH is updated).")
     return "\n".join(lines)
 
 

@@ -8,7 +8,7 @@ from filemeta2json.exiftool_reader import BASE_ARGUMENTS, ExifToolReader
 
 
 class FakeRunner:
-    """Ersetzt subprocess.run und merkt sich den Aufruf."""
+    """Replaces subprocess.run and records the call."""
 
     def __init__(self, stdout=b"[]", stderr=b"", returncode=0, error=None):
         self._result = subprocess.CompletedProcess([], returncode, stdout, stderr)

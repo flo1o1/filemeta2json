@@ -1,4 +1,4 @@
-"""Kommandozeilenschnittstelle."""
+"""Command-line interface."""
 
 import argparse
 import sys
@@ -21,15 +21,15 @@ OUTPUT_ENCODING = "utf-8"
 
 
 def build_parser() -> argparse.ArgumentParser:
-    """Erzeugt den Argument-Parser."""
+    """Create the argument parser."""
     parser = argparse.ArgumentParser(
         prog="filemeta2json",
-        description="Liest eingebettete Metadaten aller Dateien unter einem Pfad "
-                    "und gibt sie mit absolutem Dateipfad als JSON aus.",
+        description="Reads embedded metadata of all files under a path "
+                    "and prints it as JSON with the absolute file path.",
     )
-    parser.add_argument("path", help="Datei oder Verzeichnis (wird rekursiv durchsucht)")
-    parser.add_argument("-o", "--output", metavar="DATEI",
-                        help="JSON in diese Datei schreiben statt nach stdout")
+    parser.add_argument("path", help="file or directory (searched recursively)")
+    parser.add_argument("-o", "--output", metavar="FILE",
+                        help="write JSON to this file instead of stdout")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -39,10 +39,10 @@ def main(argv: Optional[Sequence[str]] = None,
          stdout: Optional[TextIO] = None,
          stderr: Optional[TextIO] = None,
          install_hint: Callable[[], str] = exiftool_install_hint) -> int:
-    """Führt das Programm aus und liefert den Exit-Code.
+    """Run the program and return the exit code.
 
-    argv: Argumente ohne Programmnamen (Standard: sys.argv[1:]).
-    reader, stdout, stderr, install_hint: austauschbar für Tests.
+    argv: arguments without the program name (default: sys.argv[1:]).
+    reader, stdout, stderr, install_hint: replaceable for tests.
     """
     reader = reader or ExifToolReader()
     stdout = stdout or sys.stdout
@@ -56,13 +56,13 @@ def main(argv: Optional[Sequence[str]] = None,
             input_path, reader, on_skipped=lambda path: _warn_skipped(path, stderr)))
         _write(json_text, output_path, stdout)
     except ExifToolNotFoundError as error:
-        print(f"Fehler: {error}\n{install_hint()}", file=stderr)
+        print(f"Error: {error}\n{install_hint()}", file=stderr)
         return EXIT_EXIFTOOL_PROBLEM
     except ExifToolExecutionError as error:
-        print(f"Fehler: {error}", file=stderr)
+        print(f"Error: {error}", file=stderr)
         return EXIT_EXIFTOOL_PROBLEM
     except FileMetaError as error:
-        print(f"Fehler: {error}", file=stderr)
+        print(f"Error: {error}", file=stderr)
         return EXIT_INVALID_ARGUMENTS
 
     return EXIT_OK
@@ -76,11 +76,11 @@ def _write(json_text: str, output_path: Optional[Path], stdout: TextIO) -> None:
         output_path.write_text(json_text, encoding=OUTPUT_ENCODING)
     except OSError as error:
         raise InvalidOutputPathError(
-            f"Ausgabedatei konnte nicht geschrieben werden: {error}\n"
-            "Rechte und freien Speicherplatz prüfen oder einen anderen Ausgabepfad wählen."
+            f"Could not write output file: {error}\n"
+            "Check permissions and free disk space, or choose a different output path."
         ) from error
 
 
 def _warn_skipped(path: Path, stderr: TextIO) -> None:
-    # ascii() maskiert ungültige Bytes, damit die Warnung selbst nie fehlschlägt.
-    print(f"Warnung: Dateiname nicht als UTF-8 lesbar, übersprungen: {ascii(str(path))}", file=stderr)
+    # ascii() escapes invalid bytes so the warning itself never fails.
+    print(f"Warning: file name is not valid UTF-8, skipped: {ascii(str(path))}", file=stderr)

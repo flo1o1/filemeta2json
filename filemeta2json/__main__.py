@@ -1,4 +1,4 @@
-"""Einstiegspunkt für `python -m filemeta2json`."""
+"""Entry point for `python -m filemeta2json`."""
 
 import sys
 

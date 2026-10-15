@@ -1,21 +1,21 @@
-"""Fachliche Fehler. Die CLI übersetzt sie in Exit-Codes und Meldungen."""
+"""Domain errors. The CLI translates them into exit codes and messages."""
 
 
 class FileMetaError(Exception):
-    """Basisklasse aller erwarteten Fehler dieses Programms."""
+    """Base class of all expected errors of this program."""
 
 
 class InvalidInputPathError(FileMetaError):
-    """Der übergebene Eingabepfad existiert nicht oder ist leer."""
+    """The given input path does not exist or is empty."""
 
 
 class InvalidOutputPathError(FileMetaError):
-    """Der Ausgabepfad ist leer, ein Verzeichnis oder hat kein existierendes Elternverzeichnis."""
+    """The output path is empty, a directory, or has no existing parent directory."""
 
 
 class ExifToolNotFoundError(FileMetaError):
-    """Das Programm `exiftool` ist nicht installiert oder nicht im PATH."""
+    """The `exiftool` program is not installed or not on the PATH."""
 
 
 class ExifToolExecutionError(FileMetaError):
-    """`exiftool` lieferte keine auswertbare Ausgabe."""
+    """`exiftool` produced no usable output."""

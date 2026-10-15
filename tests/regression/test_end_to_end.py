@@ -1,4 +1,4 @@
-"""Regressionstests gegen das echte `exiftool`; sichern das Gesamtverhalten ab."""
+"""Regression tests against the real `exiftool`; guard the overall behavior."""
 
 import json
 import os
@@ -21,7 +21,7 @@ def _png_chunk(kind: bytes, data: bytes) -> bytes:
 
 
 def minimal_png() -> bytes:
-    """Kleinstes gültiges 1x1-PNG ohne Metadaten."""
+    """Smallest valid 1x1 PNG without metadata."""
     header = struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)
     pixel = zlib.compress(b"\x00\xff\xff\xff")
     return (b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", header)
@@ -41,7 +41,7 @@ def run_cli(*arguments: str) -> subprocess.CompletedProcess:
                           cwd=REPOSITORY_ROOT, capture_output=True, text=True, encoding="utf-8")
 
 
-@unittest.skipUnless(EXIFTOOL_AVAILABLE, "exiftool nicht installiert")
+@unittest.skipUnless(EXIFTOOL_AVAILABLE, "exiftool not installed")
 class EndToEndRegressionTest(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -118,7 +118,7 @@ class EndToEndRegressionTest(unittest.TestCase):
         result = run_cli(str(self.root))
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual([e["path"] for e in json.loads(result.stdout)], [str(self.root / "bild.png")])
-        self.assertIn("Warnung", result.stderr)
+        self.assertIn("Warning", result.stderr)
 
     def test_empty_directory_yields_empty_json_array(self):
         self.assertEqual(self._entries(), [])
@@ -139,7 +139,7 @@ class MissingExifToolRegressionTest(unittest.TestCase):
                 [sys.executable, "-m", "filemeta2json", data], cwd=REPOSITORY_ROOT,
                 capture_output=True, text=True, env={**environment, "PYTHONPATH": str(REPOSITORY_ROOT)})
         self.assertEqual(result.returncode, 3)
-        self.assertIn("nicht gefunden", result.stderr)
+        self.assertIn("not found", result.stderr)
         self.assertIn("exiftool -ver", result.stderr)
         self.assertTrue("exiftool.org" in result.stderr or "install exiftool" in result.stderr
                         or "install libimage-exiftool-perl" in result.stderr, result.stderr)

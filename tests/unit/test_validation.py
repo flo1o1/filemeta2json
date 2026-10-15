@@ -37,14 +37,14 @@ class PermissionHintsTest(unittest.TestCase):
         locked = self.dir / "locked"
         locked.mkdir()
         self._restrict(locked, 0o000)
-        with self.assertRaisesRegex(InvalidInputPathError, "(?s)Leseberechtigung.*chmod"):
+        with self.assertRaisesRegex(InvalidInputPathError, "(?s)read permission.*chmod"):
             validate_input_path(str(locked))
 
     def test_unwritable_output_directory_names_problem_and_fix(self):
         readonly = self.dir / "readonly"
         readonly.mkdir()
         self._restrict(readonly, 0o500)
-        with self.assertRaisesRegex(InvalidOutputPathError, "(?s)Schreibberechtigung.*anderen Ausgabepfad"):
+        with self.assertRaisesRegex(InvalidOutputPathError, "(?s)write permission.*different output path"):
             validate_output_path(str(readonly / "out.json"))
 
     def test_unwritable_existing_output_file_is_rejected(self):
@@ -57,7 +57,7 @@ class PermissionHintsTest(unittest.TestCase):
 
 class MessageHintsTest(unittest.TestCase):
     def test_missing_input_hints_at_quoting_paths_with_spaces(self):
-        with self.assertRaisesRegex(InvalidInputPathError, "Anführungszeichen"):
+        with self.assertRaisesRegex(InvalidInputPathError, "quote paths"):
             validate_input_path("/definitely/not/here")
 
     def test_missing_output_directory_hints_at_mkdir(self):
