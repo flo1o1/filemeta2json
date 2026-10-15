@@ -31,9 +31,13 @@ def minimal_png() -> bytes:
 def write_png_with_title(path: Path, title: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(minimal_png())
-    subprocess.run(["exiftool", "-overwrite_original", "-charset", "filename=utf8",
-                    f"-XMP:Title={title}", str(path)],
-                   check=True, capture_output=True)
+    # Arguments go via stdin: Windows command lines cannot carry Unicode to exiftool.
+    arguments = f"-XMP:Title={title}\n{path}\n"
+    result = subprocess.run(["exiftool", "-overwrite_original", "-charset", "filename=utf8",
+                             "-charset", "utf8", "-@", "-"],
+                            input=arguments.encode("utf-8"), capture_output=True)
+    if b"1 image files updated" not in result.stdout:
+        raise RuntimeError(result.stdout + result.stderr)
 
 
 def run_cli(*arguments: str) -> subprocess.CompletedProcess:
@@ -108,6 +112,7 @@ class EndToEndRegressionTest(unittest.TestCase):
         self.assertEqual(file_run.stdout, "")
         self.assertEqual(target.read_text(encoding="utf-8"), stdout_run.stdout)
 
+    @unittest.skipIf(os.name == "nt", "Windows file names are always valid Unicode")
     def test_non_utf8_filename_is_skipped_with_warning_and_others_still_reported(self):
         try:
             with open(os.path.join(os.fsencode(self.root), b"caf\xe9.txt"), "wb") as handle:
