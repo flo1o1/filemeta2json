@@ -2,6 +2,14 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning according to [SemVer](https://semver.org/).
 
+## [1.3.1] - 2026-10-15
+
+### Fixed
+- Windows: JSON on stdout is always UTF-8; non-ASCII metadata no longer fails with `UnicodeEncodeError` on legacy console code pages.
+
+### Changed
+- Test suite runs on Linux, macOS and Windows (CI), including the `exiftool` regression tests.
+
 ## [1.3.0] - 2026-10-15
 
 ### Added

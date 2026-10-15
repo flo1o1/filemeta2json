@@ -1,6 +1,5 @@
 import io
 import json
-import os
 import tempfile
 import unittest
 import unittest.mock
@@ -41,6 +40,14 @@ class MainTest(unittest.TestCase):
         self.assertEqual(json.loads(self.stdout.getvalue()),
                          [{"path": str(self.root / "a.jpg"), "metadata": {"EXIF:Make": "Canon"}}])
 
+    def test_stdout_is_utf8_even_if_console_uses_legacy_code_page(self):
+        raw = io.BytesIO()
+        self.stdout = io.TextIOWrapper(raw, encoding="cp1252")
+        records = [{"SourceFile": str(self.root / "a.jpg"), "XMP:Title": "日本"}]
+        self.assertEqual(self._run([str(self.root)], StubReader(records)), EXIT_OK)
+        self.stdout.flush()
+        self.assertIn("日本", raw.getvalue().decode("utf-8"))
+
     def test_writes_to_file_and_keeps_stdout_empty(self):
         target = self.root / "out.json"
         self.assertEqual(self._run([str(self.root), "-o", str(target)]), EXIT_OK)
@@ -79,7 +86,7 @@ class MainTest(unittest.TestCase):
         self.assertIn("different output path", self.stderr.getvalue())
 
     def test_unencodable_filename_is_warned_about_and_run_succeeds(self):
-        bad = Path(os.fsdecode(b"/x/caf\xe9.jpg"))
+        bad = Path("/x/caf\udce9.jpg")
         with unittest.mock.patch("filemeta2json.service.collect_files", return_value=[bad]):
             self.assertEqual(self._run([str(self.root)], StubReader()), EXIT_OK)
         self.assertIn("Warning", self.stderr.getvalue())

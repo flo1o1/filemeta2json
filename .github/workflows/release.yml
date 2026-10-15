@@ -23,9 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      # Test suite assumes POSIX paths and permissions.
-      - if: runner.os != 'Windows'
-        run: python -m unittest discover -s tests -t .
+      - uses: ./.github/actions/setup-exiftool
+      - run: python -m unittest discover -s tests -t .
       - run: pip install pyinstaller
       - run: pyinstaller --onefile --name filemeta2json --paths . bin/filemeta2json
       - name: Rename binary

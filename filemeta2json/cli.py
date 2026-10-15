@@ -70,6 +70,9 @@ def main(argv: Optional[Sequence[str]] = None,
 
 def _write(json_text: str, output_path: Optional[Path], stdout: TextIO) -> None:
     if output_path is None:
+        # Windows consoles default to a legacy code page that cannot encode all of the JSON.
+        if hasattr(stdout, "reconfigure"):
+            stdout.reconfigure(encoding=OUTPUT_ENCODING)
         stdout.write(json_text)
         return
     try:

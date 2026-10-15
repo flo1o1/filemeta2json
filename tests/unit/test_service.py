@@ -1,4 +1,3 @@
-import os
 import tempfile
 import unittest
 import unittest.mock
@@ -48,7 +47,7 @@ class CollectMetadataTest(unittest.TestCase):
         self.assertEqual(paths, sorted(paths))
 
     def test_unencodable_filenames_are_skipped_and_reported(self):
-        bad = Path(os.fsdecode(b"/x/caf\xe9.jpg"))
+        bad = Path("/x/caf\udce9.jpg")
         good = self.root / "a.jpg"
         reader, skipped = FakeReader([]), []
         with unittest.mock.patch("filemeta2json.service.collect_files", return_value=[bad, good]):

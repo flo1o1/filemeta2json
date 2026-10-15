@@ -1,0 +1,14 @@
+name: Set up exiftool
+description: Install exiftool so the regression tests run on every OS.
+runs:
+  using: composite
+  steps:
+    - if: runner.os == 'Linux'
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y libimage-exiftool-perl
+    - if: runner.os == 'macOS'
+      shell: bash
+      run: brew install exiftool
+    - if: runner.os == 'Windows'
+      shell: pwsh
+      run: choco install exiftool -y --no-progress

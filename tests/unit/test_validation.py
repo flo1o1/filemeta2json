@@ -21,7 +21,7 @@ class ValidateInputPathTest(unittest.TestCase):
             validate_input_path("   ")
 
 
-@unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root ignoriert Dateirechte")
+@unittest.skipIf(os.name != "posix" or os.geteuid() == 0, "needs POSIX file modes and a non-root user")
 class PermissionHintsTest(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()

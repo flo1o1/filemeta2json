@@ -33,7 +33,7 @@ class ExifToolReaderTest(unittest.TestCase):
         ExifToolReader(runner, executable="et").read([Path("/a b/ä.jpg"), Path("/c.png")])
         command, kwargs = runner.calls[0]
         self.assertEqual(command, ["et", *BASE_ARGUMENTS])
-        self.assertEqual(kwargs["input"], "/a b/ä.jpg\n/c.png".encode("utf-8"))
+        self.assertEqual(kwargs["input"], f"{Path('/a b/ä.jpg')}\n{Path('/c.png')}".encode("utf-8"))
 
     def test_returns_parsed_records(self):
         records = [{"SourceFile": "/a", "EXIF:Make": "x"}]
