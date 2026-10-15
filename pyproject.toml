@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "filemeta2json"
+dynamic = ["version"]
+description = "Liest eingebettete Datei-Metadaten (via exiftool) und gibt sie als JSON aus."
+requires-python = ">=3.9"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.scripts]
+filemeta2json = "filemeta2json.cli:main"
+
+[tool.setuptools]
+packages = ["filemeta2json"]
+
+[tool.setuptools.dynamic]
+version = { attr = "filemeta2json.__version__" }

@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""Startskript: macht das Paket auch über einen Symlink (z. B. in ~/.local/bin) aufrufbar."""
+
+import os
+import sys
+
+REPOSITORY_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.insert(0, REPOSITORY_ROOT)
+
+from filemeta2json.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())
