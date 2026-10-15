@@ -2,6 +2,11 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning according to [SemVer](https://semver.org/).
 
+## [1.3.0] - 2026-10-15
+
+### Added
+- Standalone binaries (PyInstaller) for Linux, macOS (arm64/x86_64) and Windows, built by GitHub Actions and attached to each `v*` release.
+
 ## [1.2.0] - 2026-10-15
 
 ### Changed

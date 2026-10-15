@@ -3,7 +3,21 @@
 Scans a file or directory (recursively), reads embedded metadata
 (EXIF, XMP, IPTC, ID3, PDF, …) and prints it as JSON with the absolute path.
 
-Requirements: Python ≥ 3.9 and [`exiftool`](https://exiftool.org) (`brew install exiftool`). No Python dependencies.
+Requirements: Python ≥ 3.9 (not for the binary) and [`exiftool`](https://exiftool.org) (`brew install exiftool`). No Python dependencies.
+
+### Standalone binary
+
+Download the file for your system from the [latest release](https://github.com/flo1o1/filemeta2json/releases/latest)
+(Linux x86_64, macOS arm64/x86_64, Windows x86_64). No Python needed, but `exiftool` must still be installed.
+
+```sh
+chmod +x filemeta2json-macos-arm64   # macOS/Linux only
+./filemeta2json-macos-arm64 ~/Bilder
+```
+
+On macOS the unsigned binary may be blocked by Gatekeeper: `xattr -d com.apple.quarantine <file>`.
+
+### From source
 
 ```sh
 python3 -m filemeta2json ~/Bilder                 # JSON to stdout
